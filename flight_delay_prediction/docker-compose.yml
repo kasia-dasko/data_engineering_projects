@@ -1,5 +1,6 @@
 version: '3.8'
 services:
+
   postgres:
     image: postgres:13
     environment:
@@ -8,8 +9,10 @@ services:
       POSTGRES_DB: airflow
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data
+
   redis:
     image: redis:latest
+
   airflow-webserver:
     image: apache/airflow:2.7.0
     depends_on:
@@ -27,9 +30,12 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
+      - ./scripts:/opt/airflow/scripts
+      - ./db:/opt/airflow/db
     ports:
       - "8080:8080"
     command: webserver
+
   airflow-scheduler:
     image: apache/airflow:2.7.0
     depends_on:
@@ -47,7 +53,10 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
+      - ./scripts:/opt/airflow/scripts
+      - ./db:/opt/airflow/db
     command: scheduler
+
   airflow-worker:
     image: apache/airflow:2.7.0
     depends_on:
@@ -65,7 +74,10 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
+      - ./scripts:/opt/airflow/scripts
+      - ./db:/opt/airflow/db
     command: celery worker
+
   airflow-init:
     image: apache/airflow:2.7.0
     depends_on:
@@ -83,6 +95,11 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
+      - ./scripts:/opt/airflow/scripts
+      - ./db:/opt/airflow/db
     command: version
+
 volumes:
   postgres-db-volume:
+
+  
