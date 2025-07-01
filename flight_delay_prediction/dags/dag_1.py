@@ -14,7 +14,7 @@ dag_1_args = {
     'depends_on_past': False,        
     'start_date': datetime(2025, 7, 1),
     'retries': 1,
-    'retry_delay': timedelta(minutes=5),  #
+    'retry_delay': timedelta(minutes=5),  
 }
 
 with DAG(
@@ -27,7 +27,7 @@ with DAG(
     create_table = PostgresOperator(
         task_id='create_table_raw_data',
         postgres_conn_id='postgres_id',
-        sql='/opt/airflow/db/create_table_raw_data.sql'
+        sql='db/create_table_raw_data.sql'
     )
 
     task_fetch = PythonOperator(
@@ -42,11 +42,17 @@ with DAG(
         provide_context=True
     )
 
+    create_table_filtered = PostgresOperator(
+        task_id='create_table_filtered',
+        postgres_conn_id='postgres_id',
+        sql='db/create_table_filtered.sql'
+    )
+
     task_new_column = PythonOperator(
         task_id='select_columns',
         python_callable=select_columns,
         provide_context=True
     )
 
-    create_table >> task_fetch >> task_warehouse >> task_new_column
+    create_table >> task_fetch >> task_warehouse >> create_table_filtered >> task_new_column
 

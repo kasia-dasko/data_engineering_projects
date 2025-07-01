@@ -3,6 +3,7 @@ import pandas as pd
 
 def select_columns(ti):
     hook = PostgresHook(postgres_conn_id='postgres_id')
+    engine = hook.get_sqlalchemy_engine()
     sql = """
     SELECT flight_date, airline_name, min_delay_dep, dep_iata
     FROM flights
