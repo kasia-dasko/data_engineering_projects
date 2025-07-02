@@ -25,19 +25,16 @@ Start Docker before proceeding.
 3. Start PostgreSQL and Redis Services
 
 Run the following command to launch the database services:
-
 docker-compose up -d postgres redis
 
 4. Initialize the Airflow Database
 
 Initialize Airflow’s metadata database by running:
-
 docker-compose run --rm airflow-webserver airflow db init
 
 5. Start All Services
 
 Start Airflow webserver, scheduler, worker, plus postgres and redis:
-
 docker-compose up -d
 
 Wait about 30 seconds for all services to fully start.
