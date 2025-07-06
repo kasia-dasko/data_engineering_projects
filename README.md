@@ -38,6 +38,7 @@ Start Airflow webserver, scheduler, worker, plus postgres and redis:
 docker-compose up -d
 
 Wait about 30 seconds for all services to fully start.
+
 6. Access Airflow UI
 
 Open your browser and navigate to:
